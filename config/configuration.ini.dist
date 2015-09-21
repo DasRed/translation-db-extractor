@@ -10,8 +10,19 @@ options[1002] = "SET NAMES 'UTF8'"
 [general]
 source.language = "de-DE"
 
-filter.duplicates.name = "duplicates"
-; filter.duplicates.options[] =
+[filter]
+export.empty.name = "emptyValue"
+export.duplicates.name = "duplicates"
+
+; [filter-disabled]
+export.regex.name = "regex"
+export.regex.options.matches.nuff.table = "user"
+export.regex.options.matches.nuff.field = "url"
+export.regex.options.matches.nuff.regex = "#^/nuff(/){0,1}.*?$#"
+
+export.regex.options.matches.narf.table = "session"
+export.regex.options.matches.narf.field = "url"
+export.regex.options.matches.narf.regex = "#^narf$#"
 
 [export]
 table_x.content = "id"

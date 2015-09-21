@@ -24,7 +24,7 @@ class Configuration extends ConfigurationAbstract
 	/**
 	 * @var FilterCollection
 	 */
-	protected $filter;
+	protected $filterExport;
 
 	/**
 	 *
@@ -66,14 +66,14 @@ class Configuration extends ConfigurationAbstract
 	/**
 	 * @return FilterCollection
 	 */
-	public function getFilter()
+	public function getFilterExport()
 	{
-		if ($this->filter === null)
+		if ($this->filterExport === null)
 		{
-			$this->filter = new FilterCollection();
+			$this->filterExport = new FilterCollection();
 		}
 
-		return $this->filter;
+		return $this->filterExport;
 	}
 
 	/**
@@ -111,21 +111,21 @@ class Configuration extends ConfigurationAbstract
 			}
 		}
 
-		// filter list
-		if ($config->general->offsetExists('filter') === true)
+		// filter list for export
+		if ($config->offsetExists('filter') === true && $config->filter->offsetExists('export') === true)
 		{
 			$filterFactory = new FilterFactory();
 
 			/* @var $filterSetting Config */
-			foreach ($config->general->filter as $filterSetting)
+			foreach ($config->filter->export as $filterSetting)
 			{
 				if ($filterSetting->offsetExists('name') === false)
 				{
 					continue;
 				}
 
-				$filterOptions = $filterSetting->offsetExists('options') === true ? $filterSetting->options : [];
-				$this->getFilter()->append($filterFactory->factory($filterSetting->name, $filterOptions));
+				$filterOptions = $filterSetting->offsetExists('options') === true ? $filterSetting->options : null;
+				$this->getFilterExport()->append($filterFactory->factory($filterSetting->name, $filterOptions));
 			}
 		}
 

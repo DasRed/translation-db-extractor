@@ -1,12 +1,16 @@
 <?php
 namespace DasRed\Translation\Db\Extractor;
 
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
+use Zend\Config\Config;
+
 interface FilterInterface
 {
+
 	/**
-	 * @param array $options
+	 * @param Config $config
 	 */
-	public function __construct(array $options = []);
+	public function __construct(Config $config = null);
 
 	/**
 	 *
@@ -16,9 +20,18 @@ interface FilterInterface
 	public function findReference($value);
 
 	/**
+	 * @param Entry $entry
+	 * @param array $row
 	 * @param string $value
-	 * @param mixed $id
 	 * @return bool
 	 */
-	public function filter($value, $id = null);
+	public function filterById(Entry $entry, array $row, $value);
+
+	/**
+	 * @param Entry $entry
+	 * @param array $row
+	 * @param string $value
+	 * @return bool
+	 */
+	public function filterByValue(Entry $entry, array $row, $value);
 }

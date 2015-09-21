@@ -1,17 +1,19 @@
 <?php
 namespace DasRed\Translation\Db\Extractor;
 
+use Zend\Config\Config;
+
 class FilterFactory
 {
 
 	/**
 	 *
 	 * @param string $filter
-	 * @param array $options
+	 * @param Config $config
 	 * @throws \InvalidArgumentException
 	 * @return FilterInterface
 	 */
-	public function factory($filter, array $options = [])
+	public function factory($filter, Config $config = null)
 	{
 		$class = '\\DasRed\\Translation\\Db\\Extractor\\Filter\\' . ucfirst($filter);
 
@@ -20,6 +22,6 @@ class FilterFactory
 			throw new \InvalidArgumentException('Filter ' . $filter . ' does not exists.');
 		}
 
-		return new $class($options);
+		return new $class($config);
 	}
 }

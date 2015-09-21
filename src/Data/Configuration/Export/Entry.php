@@ -97,6 +97,14 @@ class Entry
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getIdLevelMax()
+	{
+		return $this->getIdLevel3();
+	}
+
+	/**
 	 *
 	 * @return string
 	 */

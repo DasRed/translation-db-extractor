@@ -1,9 +1,10 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Filter;
 
-use DasRed\Translation\Db\Extractor\FilterInterface;
+use DasRed\Translation\Db\Extractor\FilterAbstract;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 
-class Duplicates implements FilterInterface
+class Duplicates extends FilterAbstract
 {
 
 	/**
@@ -13,22 +14,12 @@ class Duplicates implements FilterInterface
 	protected $list = [];
 
 	/**
-	 *
-	 * @param array $options
-	 */
-	public function __construct(array $options = [])
-	{
-		// nothing to do
-	}
-
-	/**
 	 * (non-PHPdoc)
 	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::findReference()
 	 */
 	public function findReference($value)
 	{
 		$hash = sha1($value);
-
 		if (array_key_exists($hash, $this->list) === false)
 		{
 			return null;
@@ -39,15 +30,11 @@ class Duplicates implements FilterInterface
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filter()
+	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filterById()
 	 */
-	public function filter($value, $id = null)
+	public function filterById(Entry $entry, array $row, $value)
 	{
-		if ($id === null)
-		{
-			throw new \InvalidArgumentException('Parameter id can not be null for ' . self::class);
-		}
-
+		$id = $entry->getIdLevelMax();
 		$hash = sha1($value);
 
 		if (array_key_exists($hash, $this->list) === true)

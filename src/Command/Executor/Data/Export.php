@@ -5,7 +5,6 @@ use Zend\Console\ColorInterface;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\ProgressBar\ProgressBar;
 use DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
 
 class Export extends DataAbstract
@@ -49,7 +48,7 @@ class Export extends DataAbstract
 				$this->getConsole()->write(': ');
 
 				// load data from database
-				$result = $this->getConnection()->query($this->getSqlFromFieldCollection($fieldCollection))->fetchAll(\PDO::FETCH_ASSOC);
+				$result = $this->getConnection()->query('SELECT * FROM `' . $fieldCollection->getTableName() . '`')->fetchAll(\PDO::FETCH_ASSOC);
 				$count = count($result);
 				// nothing to do
 				if ($count === 0)
@@ -89,27 +88,6 @@ class Export extends DataAbstract
 		}
 
 		return true;
-	}
-
-	/**
-	 *
-	 * @param FieldCollection $fieldCollection
-	 * @return string
-	 */
-	protected function getSqlFromFieldCollection(FieldCollection $fieldCollection)
-	{
-		$fields = [];
-
-		/* @var $entry Entry */
-		foreach ($fieldCollection as $entry)
-		{
-			$fields[] = '`' . $fieldCollection->getTableName() . '`.`' . $entry->getIdFieldName() . '` AS `' . $entry->getIdFieldName() . '`';
-			$fields[] = '`' . $fieldCollection->getTableName() . '`.`' . $entry->getFieldName() . '` AS `' . $entry->getFieldName() . '`';
-		}
-
-		$fields = array_unique($fields);
-
-		return 'SELECT ' . implode(',', $fields) . ' FROM `' . $fieldCollection->getTableName() . '`';
 	}
 
 	/**
@@ -196,12 +174,6 @@ class Export extends DataAbstract
 	{
 		foreach ($row as $fieldName => $value)
 		{
-			// empty, nothing to do
-			if (empty($value) === true)
-			{
-				continue;
-			}
-
 			// convert to UTF-8
 			if (mb_detect_encoding($value) !== 'UTF-8')
 			{
@@ -226,10 +198,16 @@ class Export extends DataAbstract
 				continue;
 			}
 
-			// filter the stuff
-			if ($this->getConfiguration()->getFilter()->filter($value, $entry->getIdLevel3()) === true)
+			// filter by value
+			if ($this->getConfiguration()->getFilterExport()->filterByValue($entry, $row, $value) === true)
 			{
-				$idReferenceLevel3 = $this->getConfiguration()->getFilter()->findReference($value);
+				continue;
+			}
+
+			// filter Before Node Creation
+			if ($this->getConfiguration()->getFilterExport()->filterById($entry, $row, $value) === true)
+			{
+				$idReferenceLevel3 = $this->getConfiguration()->getFilterExport()->findReference($value);
 				$idReferenceLevel2 = substr($idReferenceLevel3, 0, strrpos($idReferenceLevel3, '.'));
 
 				$xmlFileHeaderReferenceElement = $this->getXml()->createElement('reference');
