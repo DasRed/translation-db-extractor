@@ -24,8 +24,8 @@ $message = 'operation' . PHP_EOL;
 $message .= PHP_EOL;
 
 $message .= $console->colorize('data Operations:', ColorInterface::YELLOW) . PHP_EOL;
-$message .= $console->colorize(' data export <configuration> <xliff> [filter [filter [...]]]', ColorInterface::GREEN) . '  export all data from database into given xliff file. Filters are: duplicate.' . PHP_EOL;
-$message .= $console->colorize(' data import <configuration> <xliff>', ColorInterface::GREEN) . '                          import the data in xliff file into database.' . PHP_EOL;
+$message .= $console->colorize(' data export <configuration> <xliff>', ColorInterface::GREEN) . '  export all data from database into given xliff file.' . PHP_EOL;
+$message .= $console->colorize(' data import <configuration> <xliff>', ColorInterface::GREEN) . '  import the data in xliff file into database.' . PHP_EOL;
 
 try
 {

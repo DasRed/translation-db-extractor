@@ -4,11 +4,14 @@ namespace DasRed\Translation\Db\Extractor\Data;
 use Zend\Config\Config;
 use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\TableCollection;
+use DasRed\Translation\Db\Extractor\Filter\Collection as FilterCollection;
+use DasRed\Translation\Db\Extractor\FilterFactory;
 
 class Configuration extends ConfigurationAbstract
 {
+
 	/**
-	 * @var array
+	 * @var Config
 	 */
 	protected $database;
 
@@ -17,6 +20,11 @@ class Configuration extends ConfigurationAbstract
 	 * @var TableCollection
 	 */
 	protected $exportMap;
+
+	/**
+	 * @var FilterCollection
+	 */
+	protected $filter;
 
 	/**
 	 *
@@ -34,7 +42,7 @@ class Configuration extends ConfigurationAbstract
 	}
 
 	/**
-	 * @return string[]
+	 * @return Config
 	 */
 	public function getDatabase()
 	{
@@ -56,12 +64,33 @@ class Configuration extends ConfigurationAbstract
 	}
 
 	/**
+	 * @return FilterCollection
+	 */
+	public function getFilter()
+	{
+		if ($this->filter === null)
+		{
+			$this->filter = new FilterCollection();
+		}
+
+		return $this->filter;
+	}
+
+	/**
 	 *
 	 * @return string
 	 */
 	public function getSourceLanguage()
 	{
 		return $this->sourceLanguage;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getXmlTemplateFile()
+	{
+		return __DIR__ . '/../../config/template.xml';
 	}
 
 	/**
@@ -82,15 +111,33 @@ class Configuration extends ConfigurationAbstract
 			}
 		}
 
+		// filter list
+		if ($config->general->offsetExists('filter') === true)
+		{
+			$filterFactory = new FilterFactory();
+
+			/* @var $filterSetting Config */
+			foreach ($config->general->filter as $filterSetting)
+			{
+				if ($filterSetting->offsetExists('name') === false)
+				{
+					continue;
+				}
+
+				$filterOptions = $filterSetting->offsetExists('options') === true ? $filterSetting->options : [];
+				$this->getFilter()->append($filterFactory->factory($filterSetting->name, $filterOptions));
+			}
+		}
+
 		return $this;
 	}
 
 	/**
 	 *
-	 * @param array $database
+	 * @param Config $database
 	 * @return self
 	 */
-	protected function setDatabase(array $database)
+	protected function setDatabase(Config $database)
 	{
 		$this->database = $database;
 

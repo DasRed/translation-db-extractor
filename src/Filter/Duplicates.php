@@ -13,6 +13,15 @@ class Duplicates implements FilterInterface
 	protected $list = [];
 
 	/**
+	 *
+	 * @param array $options
+	 */
+	public function __construct(array $options = [])
+	{
+		// nothing to do
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::findReference()
 	 */

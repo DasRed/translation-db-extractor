@@ -4,6 +4,11 @@ namespace DasRed\Translation\Db\Extractor;
 interface FilterInterface
 {
 	/**
+	 * @param array $options
+	 */
+	public function __construct(array $options = []);
+
+	/**
 	 *
 	 * @param string $value
 	 * @return string|null

@@ -2,6 +2,7 @@
 namespace DasRed\Translation\Db\Extractor\Database\Connection;
 
 use DasRed\Translation\Db\Extractor\Data\Configuration;
+
 class Factory
 {
 
@@ -12,12 +13,11 @@ class Factory
 	 */
 	public function factory(Configuration $configuration)
 	{
-		$settings = $configuration->getDatabase();
-		$dsn = $settings['driver'];
-		$dsn .= ':host=' . $settings['host'];
-		$dsn .= empty($settings['port']) === false ? ';port=' . $settings['port'] : '';
-		$dsn .= ';dbname=' . ['schema'];
+		$dsn = $configuration->getDatabase()->driver;
+		$dsn .= ':host=' . $configuration->getDatabase()->host;
+		$dsn .= $configuration->getDatabase()->offsetExists('port') === true ? ';port=' . $configuration->getDatabase()->port : '';
+		$dsn .= ';dbname=' . $configuration->getDatabase()->schema;
 
-		return new \PDO($dsn, $settings['username'], $settings['password'], $settings['options']);
+		return new \PDO($dsn, $configuration->getDatabase()->username, $configuration->getDatabase()->password, $configuration->getDatabase()->options->toArray());
 	}
 }

@@ -7,10 +7,11 @@ class FilterFactory
 	/**
 	 *
 	 * @param string $filter
+	 * @param array $options
 	 * @throws \InvalidArgumentException
 	 * @return FilterInterface
 	 */
-	public function factory($filter)
+	public function factory($filter, array $options = [])
 	{
 		$class = '\\DasRed\\Translation\\Db\\Extractor\\Filter\\' . ucfirst($filter);
 
@@ -19,6 +20,6 @@ class FilterFactory
 			throw new \InvalidArgumentException('Filter ' . $filter . ' does not exists.');
 		}
 
-		return new $class();
+		return new $class($options);
 	}
 }

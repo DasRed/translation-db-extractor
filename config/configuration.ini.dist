@@ -5,12 +5,13 @@ port = 3306
 schema = "db_schema"
 username = "user"
 password = "secret"
-driverOptions[1002] = "SET NAMES 'UTF8'"
+options[1002] = "SET NAMES 'UTF8'"
 
 [general]
 source.language = "de-DE"
 
-filter.duplicates = 1
+filter.duplicates.name = "duplicates"
+; filter.duplicates.options[] =
 
 [export]
 table_x.content = "id"

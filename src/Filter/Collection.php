@@ -5,6 +5,15 @@ use DasRed\Translation\Db\Extractor\FilterInterface;
 
 class Collection extends \DasRed\Translation\Db\Extractor\Collection implements FilterInterface
 {
+	/**
+	 *
+	 * @param array $options
+	 * @param array $array
+	 */
+	public function __construct(array $options = [], array $array = [])
+	{
+		parent::__construct($array);
+	}
 
 	/**
 	 * (non-PHPdoc)

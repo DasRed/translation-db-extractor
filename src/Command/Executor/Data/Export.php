@@ -7,17 +7,9 @@ use Zend\ProgressBar\ProgressBar;
 use DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract;
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
-use DasRed\Translation\Db\Extractor\Filter\Collection;
-use DasRed\Translation\Db\Extractor\FilterFactory;
 
 class Export extends DataAbstract
 {
-
-	/**
-	 *
-	 * @var Collection
-	 */
-	protected $filter;
 
 	/**
 	 *
@@ -40,36 +32,6 @@ class Export extends DataAbstract
 	 */
 	protected $xmlFileHeaderElement = [];
 
-	/**
-	 *
-	 * @return Collection
-	 */
-	protected function getFilter()
-	{
-		if ($this->filter === null)
-		{
-			// find sub filters
-			$filters = array_slice($this->getArguments(), 2);
-			if (count($filters) === 0)
-			{
-				$filters = [
-					'noop'
-				];
-			}
-
-			// factory for filters
-			$factory = new FilterFactory();
-
-			// create sub filters
-			// create collection filter
-			$this->filter = new Collection(array_map(function ($filter) use($factory)
-			{
-				return $factory->factory($filter);
-			}, $filters));
-		}
-		return $this->filter;
-	}
-
 	/*
 	 * (non-PHPdoc)
 	 * @see \DasRed\Translation\Command\ExecutorAbstract::execute()
@@ -87,7 +49,7 @@ class Export extends DataAbstract
 				$this->getConsole()->write(': ');
 
 				// load data from database
-				$result = $this->getConnection()->fetchAll($this->getSqlFromFieldCollection($fieldCollection));
+				$result = $this->getConnection()->query($this->getSqlFromFieldCollection($fieldCollection))->fetchAll(\PDO::FETCH_ASSOC);
 				$count = count($result);
 				// nothing to do
 				if ($count === 0)
@@ -160,7 +122,7 @@ class Export extends DataAbstract
 			$this->xml = new \DOMDocument();
 			$this->xml->formatOutput = true;
 			$this->xml->preserveWhiteSpace = true;
-			$this->xml->load(__DIR__ . '/../../../config/template.xml');
+			$this->xml->load($this->getConfiguration()->getXmlTemplateFile());
 		}
 
 		return $this->xml;
@@ -265,14 +227,17 @@ class Export extends DataAbstract
 			}
 
 			// filter the stuff
-			if ($this->getFilter()->filter($value, $entry->getIdLevel3()) === true)
+			if ($this->getConfiguration()->getFilter()->filter($value, $entry->getIdLevel3()) === true)
 			{
-				$idReference = $this->getFilter()->findReference($value);
-				$idReference = substr($idReference, 0, strrpos($idReference, '.'));
+				$idReferenceLevel3 = $this->getConfiguration()->getFilter()->findReference($value);
+				$idReferenceLevel2 = substr($idReferenceLevel3, 0, strrpos($idReferenceLevel3, '.'));
 
 				$xmlFileHeaderReferenceElement = $this->getXml()->createElement('reference');
-				$xmlFileHeaderReferenceElement->appendChild($this->getXml()->createElement('internal-file', $entry->getIdLevel3()));
-				$this->getXmlFileHeaderElement($idReference)->appendChild($xmlFileHeaderReferenceElement);
+				$xmlFileHeaderReferenceElement->appendChild($this->getXml()->createElement('internal-file', json_encode([
+					'duplicateId' => $entry->getIdLevel3(),
+					'referenceId' => $idReferenceLevel3
+				])));
+				$this->getXmlFileHeaderElement($idReferenceLevel2)->appendChild($xmlFileHeaderReferenceElement);
 				continue;
 			}
 
@@ -301,7 +266,7 @@ class Export extends DataAbstract
 	 */
 	protected function validateArguments($arguments)
 	{
-		if (count($arguments) < 2)
+		if (count($arguments) != 2)
 		{
 			return false;
 		}
