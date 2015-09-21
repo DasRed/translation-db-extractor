@@ -1,21 +1,20 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Filter;
 
-use DasRed\Translation\Db\Extractor\FilterAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
+use DasRed\Translation\Db\Extractor\FilterAbstract;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
 
 class Regex extends FilterAbstract
 {
-
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filterByValue()
+	 * @see \DasRed\Translation\Db\Extractor\FilterAbstract::filterByRow()
 	 */
-	public function filterByValue(Entry $entry, array $row, $value)
+	public function filterByRow(FieldCollection $fieldCollection, array $row)
 	{
 		// find the options
-		$options = $this->getOptionsByEntry($entry);
+		$options = $this->getOptionsByTableName($fieldCollection->getTableName());
 		if (count($options) === 0)
 		{
 			return false;
@@ -30,7 +29,7 @@ class Regex extends FilterAbstract
 			}
 
 			// match
-			if ((bool)preg_match($option->regex, $row[$option->field]) === true)
+			if ($this->isMatched($option->match, $row[$option->field]) === true)
 			{
 				return true;
 			}
@@ -54,10 +53,10 @@ class Regex extends FilterAbstract
 
 	/**
 	 *
-	 * @param Entry $entry
+	 * @param string $tableName
 	 * @return Config[]
 	 */
-	public function getOptionsByEntry(Entry $entry)
+	public function getOptionsByTableName($tableName)
 	{
 		if ($this->getMatches() === null)
 		{
@@ -68,17 +67,28 @@ class Regex extends FilterAbstract
 		/* @var $options Config */
 		foreach ($this->getMatches() as $options)
 		{
-			if ($options->offsetExists('table') === false || $options->offsetExists('field') === false || $options->offsetExists('regex') === false)
+			if ($options->offsetExists('table') === false || $options->offsetExists('field') === false || $options->offsetExists('match') === false)
 			{
 				continue;
 			}
 
-			if ($options->table === $entry->getTableName())
+			if ($options->table === $tableName)
 			{
 				$matches[] = $options;
 			}
 		}
 
 		return $matches;
+	}
+
+	/**
+	 *
+	 * @param string $pattern
+	 * @param string $value
+	 * @return boolean
+	 */
+	protected function isMatched($pattern, $value)
+	{
+		return (bool)preg_match($pattern, (string)$value);
 	}
 }

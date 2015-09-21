@@ -3,6 +3,7 @@ namespace DasRed\Translation\Db\Extractor;
 
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
 
 interface FilterInterface
 {
@@ -26,6 +27,14 @@ interface FilterInterface
 	 * @return bool
 	 */
 	public function filterById(Entry $entry, array $row, $value);
+
+	/**
+	 *
+	 * @param FieldCollection $fieldCollection
+	 * @param array $row
+	 * @return bool
+	 */
+	public function filterByRow(FieldCollection $fieldCollection, array $row);
 
 	/**
 	 * @param Entry $entry

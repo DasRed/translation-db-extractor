@@ -172,6 +172,11 @@ class Export extends DataAbstract
 	 */
 	protected function handleRowFromDatabaseForFieldCollection(FieldCollection $fieldCollection, array $row)
 	{
+		if ($this->getConfiguration()->getFilterExport()->filterByRow($fieldCollection, $row) === true)
+		{
+			return $this;
+		}
+
 		foreach ($row as $fieldName => $value)
 		{
 			// convert to UTF-8

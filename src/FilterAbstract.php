@@ -3,6 +3,7 @@ namespace DasRed\Translation\Db\Extractor;
 
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
 
 abstract class FilterAbstract implements FilterInterface
 {
@@ -38,6 +39,15 @@ abstract class FilterAbstract implements FilterInterface
 	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filterById()
 	 */
 	public function filterById(Entry $entry, array $row, $value)
+	{
+		return false;
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filterByRow()
+	 */
+	public function filterByRow(FieldCollection $fieldCollection, array $row)
 	{
 		return false;
 	}

@@ -18,11 +18,11 @@ export.duplicates.name = "duplicates"
 export.regex.name = "regex"
 export.regex.options.matches.nuff.table = "user"
 export.regex.options.matches.nuff.field = "url"
-export.regex.options.matches.nuff.regex = "#^/nuff(/){0,1}.*?$#"
+export.regex.options.matches.nuff.match = "#^/nuff(/){0,1}.*?$#"
 
-export.regex.options.matches.narf.table = "session"
-export.regex.options.matches.narf.field = "url"
-export.regex.options.matches.narf.regex = "#^narf$#"
+export.match.options.matches.narf.table = "session"
+export.match.options.matches.narf.field = "url"
+export.match.options.matches.narf.match = "narf*"
 
 [export]
 table_x.content = "id"

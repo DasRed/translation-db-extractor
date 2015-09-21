@@ -4,6 +4,7 @@ namespace DasRed\Translation\Db\Extractor\Filter;
 use DasRed\Translation\Db\Extractor\FilterInterface;
 use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
 
 class Collection extends \DasRed\Translation\Db\Extractor\Collection implements FilterInterface
 {
@@ -40,16 +41,15 @@ class Collection extends \DasRed\Translation\Db\Extractor\Collection implements 
 	/**
 	 *
 	 * @param string $method
-	 * @param Entry $entry
-	 * @param array $row
-	 * @param string $value
+	 * @param unknown ...$parameters
+	 * @return boolean
 	 */
-	protected function filter($method, Entry $entry, array $row, $value)
+	protected function filter($method, ...$parameters)
 	{
 		/* @var $filter FilterInterface */
 		foreach ($this as $filter)
 		{
-			if ($filter->$method($entry, $row, $value) === true)
+			if ($filter->$method(...$parameters) === true)
 			{
 				return true;
 			}
@@ -65,6 +65,15 @@ class Collection extends \DasRed\Translation\Db\Extractor\Collection implements 
 	public function filterById(Entry $entry, array $row, $value)
 	{
 		return $this->filter('filterById', $entry, $row, $value);
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\FilterInterface::filterByRow()
+	 */
+	public function filterByRow(FieldCollection $fieldCollection, array $row)
+	{
+		return $this->filter('filterByRow', $fieldCollection, $row);
 	}
 
 	/**
