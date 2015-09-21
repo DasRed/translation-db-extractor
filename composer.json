@@ -1,0 +1,29 @@
+{
+	"name": "dasred/translation-db-extractor",
+	"homepage": "https://github.com/DasRed/translation-db-extractor",
+
+	"prefer-stable": true,
+	"minimum-stability": "dev",
+
+	"require": {
+		"php": ">=5.5",
+		"zendframework/zend-config": "~2.5",
+		"zendframework/zend-progressbar": "~2.5",
+		"dasred/zend-console": "@stable"
+	},
+
+	"autoload": {
+		"psr-4": {
+			"DasRed\\Translation\\Db\\Extractor\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"DasRedTest\\Translation\\Db\\Extractor\\": "test/"
+		}
+	},
+
+	"bin": [
+		"bin/extractor"
+	]
+}
