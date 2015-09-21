@@ -1,0 +1,24 @@
+[database]
+driver = "mysql"
+host = "localhost"
+port = 3306
+schema = "db_schema"
+username = "user"
+password = "secret"
+driverOptions[1002] = "SET NAMES 'UTF8'"
+
+[general]
+source.language = "de-DE"
+
+filter.duplicates = 1
+
+[export]
+table_x.content = "id"
+table_y.message = "id"
+table_z.text = "id"
+
+[export-disabled]
+table_a.nuff = "id"
+table_a.narf = "id"
+table_c.text = "id"
+table_f.description = "id"
