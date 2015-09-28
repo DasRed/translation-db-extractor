@@ -83,7 +83,7 @@ class Regex extends FilterAbstract
 
 	/**
 	 *
-	 * @param string $pattern
+	 * @param mixed $pattern
 	 * @param string $value
 	 * @return boolean
 	 */
