@@ -1,7 +1,7 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Database;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration;
+use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
 use DasRed\Translation\Db\Extractor\Database\Connection\Factory;
 
 trait ConnectionAwareTrait
@@ -14,7 +14,7 @@ trait ConnectionAwareTrait
 	protected $connection;
 
 	/**
-	 * @return Configuration
+	 * @return ConfigurationAbstract
 	 */
 	abstract protected function getConfiguration();
 

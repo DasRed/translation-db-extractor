@@ -1,7 +1,9 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Export;
+namespace DasRed\Translation\Db\Extractor\Data\Configuration\Map;
 
-class Entry
+use DasRed\Translation\Db\Extractor\Collection\EntryInterface;
+
+class Entry implements EntryInterface
 {
 
 	/**
@@ -26,6 +28,12 @@ class Entry
 	 *
 	 * @var string
 	 */
+	protected $linkFieldName;
+
+	/**
+	 *
+	 * @var string
+	 */
 	protected $tableName;
 
 	/**
@@ -33,10 +41,11 @@ class Entry
 	 * @param string $tableName
 	 * @param string $fieldName
 	 * @param string $idFieldName
+	 * @param string $linkFieldName
 	 */
-	public function __construct($tableName, $fieldName, $idFieldName)
+	public function __construct($tableName, $fieldName, $idFieldName, $linkFieldName = null)
 	{
-		$this->setTableName($tableName)->setFieldName($fieldName)->setIdFieldName($idFieldName);
+		$this->setTableName($tableName)->setFieldName($fieldName)->setIdFieldName($idFieldName)->setLinkFieldName($linkFieldName);
 	}
 
 	/**
@@ -105,6 +114,23 @@ class Entry
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getLinkFieldName()
+	{
+		return $this->linkFieldName;
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\Collection\EntryInterface::getOffsetKey()
+	 */
+	public function getOffsetKey()
+	{
+		return $this->getFieldName();
+	}
+
+	/**
 	 *
 	 * @return string
 	 */
@@ -160,6 +186,17 @@ class Entry
 	protected function setIdFieldName($idFieldName)
 	{
 		$this->idFieldName = $idFieldName;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $linkFieldName
+	 * @return self
+	 */
+	public function setLinkFieldName($linkFieldName)
+	{
+		$this->linkFieldName = $linkFieldName;
 
 		return $this;
 	}

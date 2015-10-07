@@ -1,17 +1,17 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Database\Connection;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration;
+use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
 
 class Factory
 {
 
 	/**
 	 *
-	 * @param Configuration $configuration
+	 * @param ConfigurationAbstract $configuration
 	 * @return \PDO
 	 */
-	public function factory(Configuration $configuration)
+	public function factory(ConfigurationAbstract $configuration)
 	{
 		$dsn = $configuration->getDatabase()->driver;
 		$dsn .= ':host=' . $configuration->getDatabase()->host;

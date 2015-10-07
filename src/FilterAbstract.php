@@ -1,9 +1,9 @@
 <?php
 namespace DasRed\Translation\Db\Extractor;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\Entry;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
 
 abstract class FilterAbstract implements FilterInterface
 {

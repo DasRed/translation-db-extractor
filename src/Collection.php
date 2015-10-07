@@ -1,7 +1,7 @@
 <?php
 namespace DasRed\Translation\Db\Extractor;
 
-class Collection extends \ArrayIterator
+class Collection extends \ArrayObject
 {
 
 	/**
@@ -25,5 +25,25 @@ class Collection extends \ArrayIterator
 		}
 
 		return $this;
+	}
+
+	/**
+	 *
+	 * @param \Closure $p
+	 * @return mixed
+	 */
+	public function find(\Closure $p)
+	{
+		$index = 0;
+		foreach ($this as $key => $element)
+		{
+			if ($p($element, $key, $index) === true)
+			{
+				return $element;
+			}
+			$index++;
+		}
+
+		return null;
 	}
 }

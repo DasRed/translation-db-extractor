@@ -1,10 +1,10 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Filter;
 
-use DasRed\Translation\Db\Extractor\FilterInterface;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
+use DasRed\Translation\Db\Extractor\FilterInterface;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\Entry;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
 
 class Collection extends \DasRed\Translation\Db\Extractor\Collection implements FilterInterface
 {

@@ -1,10 +1,11 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Export;
+namespace DasRed\Translation\Db\Extractor\Data\Configuration\Map;
 
-use DasRed\Translation\Db\Extractor\Collection;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\Entry;
+use DasRed\Translation\Db\Extractor\Collection\Object;
+use DasRed\Translation\Db\Extractor\Collection\EntryInterface;
 
-class FieldCollection extends Collection
+class FieldCollection extends Object implements EntryInterface
 {
 
 	/**
@@ -26,27 +27,14 @@ class FieldCollection extends Collection
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 *
-	 * @see ArrayIterator::append()
-	 * @param Entry $value
-	 */
-	public function append($value)
-	{
-		$this->validate($value)->offsetSet($value->getFieldName(), $value);
-
-		return $this;
-	}
-
-	/**
 	 *
 	 * @param string $fieldName
 	 * @param string $idFieldName
 	 * @return Entry
 	 */
-	public function create($fieldName, $idFieldName)
+	public function create($fieldName, $idFieldName, $linkFieldName = null)
 	{
-		$entry = new Entry($this->getTableName(), $fieldName, $idFieldName);
+		$entry = new Entry($this->getTableName(), $fieldName, $idFieldName, $linkFieldName);
 
 		$this->offsetSet($fieldName, $entry);
 
@@ -63,15 +51,12 @@ class FieldCollection extends Collection
 	}
 
 	/**
-	 * (non-PHPdoc)
 	 *
-	 * @see ArrayIterator::offsetSet()
+	 * @return string
 	 */
-	public function offsetSet($index, $newval)
+	public function getOffsetKey()
 	{
-		$this->validate($newval);
-
-		return parent::offsetSet($index, $newval);
+		return $this->getTableName();
 	}
 
 	/**
@@ -104,6 +89,6 @@ class FieldCollection extends Collection
 			throw new \InvalidArgumentException('$value must be setted to the table name ' . $this->getTableName() . '!');
 		}
 
-		return $this;
+		return parent::validate($value);
 	}
 }

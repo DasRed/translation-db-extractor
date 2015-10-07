@@ -2,29 +2,27 @@
 namespace DasRed\Translation\Db\Extractor\Data;
 
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\TableCollection;
-use DasRed\Translation\Db\Extractor\Filter\Collection as FilterCollection;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\TableCollection;
 use DasRed\Translation\Db\Extractor\FilterFactory;
+use DasRed\Translation\Db\Extractor\Filter\Collection as FilterCollection;
 
-class Configuration extends ConfigurationAbstract
+abstract class ConfigurationAbstract
 {
 
 	/**
 	 * @var Config
 	 */
 	protected $database;
+	/**
+	 * @var FilterCollection
+	 */
+	protected $filter;
 
 	/**
 	 *
 	 * @var TableCollection
 	 */
-	protected $exportMap;
-
-	/**
-	 * @var FilterCollection
-	 */
-	protected $filterExport;
+	protected $map;
 
 	/**
 	 *
@@ -42,6 +40,18 @@ class Configuration extends ConfigurationAbstract
 	}
 
 	/**
+	 * @param Config $config
+	 * @return Config
+	 */
+	abstract protected function getConfigFilter(Config $config);
+
+	/**
+	 * @param Config $config
+	 * @return Config
+	 */
+	abstract protected function getConfigMap(Config $config);
+
+	/**
 	 * @return Config
 	 */
 	public function getDatabase()
@@ -50,30 +60,30 @@ class Configuration extends ConfigurationAbstract
 	}
 
 	/**
-	 *
-	 * @return TableCollection
+	 * @return FilterCollection
 	 */
-	public function getExportMap()
+	public function getFilter()
 	{
-		if ($this->exportMap === null)
+		if ($this->filter === null)
 		{
-			$this->exportMap = new TableCollection();
+			$this->filter = new FilterCollection();
 		}
 
-		return $this->exportMap;
+		return $this->filter;
 	}
 
 	/**
-	 * @return FilterCollection
+	 *
+	 * @return TableCollection
 	 */
-	public function getFilterExport()
+	public function getMap()
 	{
-		if ($this->filterExport === null)
+		if ($this->map === null)
 		{
-			$this->filterExport = new FilterCollection();
+			$this->map = new TableCollection();
 		}
 
-		return $this->filterExport;
+		return $this->map;
 	}
 
 	/**
@@ -86,14 +96,6 @@ class Configuration extends ConfigurationAbstract
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getXmlTemplateFile()
-	{
-		return __DIR__ . '/../../config/template.xml';
-	}
-
-	/**
 	 *
 	 * @param Config $config
 	 * @return self
@@ -102,31 +104,42 @@ class Configuration extends ConfigurationAbstract
 	{
 		$this->setSourceLanguage($config->general->source->language)->setDatabase($config->database);
 
+		// map definitions
 		/* @var $fieldList Config */
-		foreach ($config->export as $tableName => $fieldList)
+		foreach ($this->getConfigMap($config) as $tableName => $fieldList)
 		{
-			foreach ($fieldList as $fieldName => $idFieldName)
+			/* @var $idFieldList Config */
+			foreach ($fieldList as $fieldName => $idFieldList)
 			{
-				$this->getExportMap()->create($tableName, $fieldName, $idFieldName);
+				// create with link field name
+				if ($idFieldList instanceof Config)
+				{
+					foreach ($idFieldList as $idFieldName => $linkFieldName)
+					{
+						$this->getMap()->create($tableName, $fieldName, $idFieldName, $linkFieldName);
+					}
+				}
+				// create without link field name
+				else
+				{
+					$this->getMap()->create($tableName, $fieldName, $idFieldList);
+				}
 			}
 		}
 
-		// filter list for export
-		if ($config->offsetExists('filter') === true && $config->filter->offsetExists('export') === true)
+		// filter definitions
+		$filterFactory = new FilterFactory();
+
+		/* @var $filterSetting Config */
+		foreach ($this->getConfigFilter($config) as $filterSetting)
 		{
-			$filterFactory = new FilterFactory();
-
-			/* @var $filterSetting Config */
-			foreach ($config->filter->export as $filterSetting)
+			if ($filterSetting->offsetExists('name') === false)
 			{
-				if ($filterSetting->offsetExists('name') === false)
-				{
-					continue;
-				}
-
-				$filterOptions = $filterSetting->offsetExists('options') === true ? $filterSetting->options : null;
-				$this->getFilterExport()->append($filterFactory->factory($filterSetting->name, $filterOptions));
+				continue;
 			}
+
+			$filterOptions = $filterSetting->offsetExists('options') === true ? $filterSetting->options : null;
+			$this->getFilter()->append($filterFactory->factory($filterSetting->name, $filterOptions));
 		}
 
 		return $this;

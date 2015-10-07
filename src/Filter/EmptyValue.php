@@ -2,7 +2,7 @@
 namespace DasRed\Translation\Db\Extractor\Filter;
 
 use DasRed\Translation\Db\Extractor\FilterAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\Entry;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\Entry;
 
 class EmptyValue extends FilterAbstract
 {

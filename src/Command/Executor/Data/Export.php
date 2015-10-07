@@ -5,16 +5,12 @@ use Zend\Console\ColorInterface;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\ProgressBar\ProgressBar;
 use DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
+use DasRed\Translation\Db\Extractor\Data\Configuration\Export as ExportConfiguration;
+use Zend\Config\Config;
 
 class Export extends DataAbstract
 {
-
-	/**
-	 *
-	 * @var \DOMDocument
-	 */
-	protected $xml;
 
 	/**
 	 * @var \DOMElement[]
@@ -31,6 +27,16 @@ class Export extends DataAbstract
 	 */
 	protected $xmlFileHeaderElement = [];
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract::createConfiguration()
+	 * @return ExportConfiguration
+	 */
+	protected function createConfiguration(Config $config)
+	{
+		return new ExportConfiguration($config);
+	}
+
 	/*
 	 * (non-PHPdoc)
 	 * @see \DasRed\Translation\Command\ExecutorAbstract::execute()
@@ -39,8 +45,8 @@ class Export extends DataAbstract
 	{
 		try
 		{
-			/* @var $fieldCollection \DasRed\Translation\Db\Extractor\Data\Configuration\Export\FieldCollection */
-			foreach ($this->getConfiguration()->getExportMap() as $fieldCollection)
+			/* @var $fieldCollection \DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection */
+			foreach ($this->getConfiguration()->getMap() as $fieldCollection)
 			{
 				// outputting
 				$this->getConsole()->write('Reading table ');
@@ -91,27 +97,22 @@ class Export extends DataAbstract
 	}
 
 	/**
-	 * @return \DOMDocument
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract::getConfiguration()
+	 * @return ExportConfiguration
 	 */
-	protected function getXml()
+	protected function getConfiguration()
 	{
-		if ($this->xml === null)
-		{
-			$this->xml = new \DOMDocument();
-			$this->xml->formatOutput = true;
-			$this->xml->preserveWhiteSpace = true;
-			$this->xml->load($this->getConfiguration()->getXmlTemplateFile());
-		}
-
-		return $this->xml;
+		return parent::getConfiguration();
 	}
 
 	/**
-	 * @return \DOMElement
+	 * (non-PHPdoc)
+	 * @see \DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract::getXmlFileToLoad()
 	 */
-	protected function getXmlDocumentElement()
+	protected function getXmlFileToLoad()
 	{
-		return $this->getXml()->documentElement;
+		return $this->getConfiguration()->getXmlTemplateFile();
 	}
 
 	/**
@@ -172,7 +173,7 @@ class Export extends DataAbstract
 	 */
 	protected function handleRowFromDatabaseForFieldCollection(FieldCollection $fieldCollection, array $row)
 	{
-		if ($this->getConfiguration()->getFilterExport()->filterByRow($fieldCollection, $row) === true)
+		if ($this->getConfiguration()->getFilter()->filterByRow($fieldCollection, $row) === true)
 		{
 			return $this;
 		}
@@ -204,15 +205,15 @@ class Export extends DataAbstract
 			}
 
 			// filter by value
-			if ($this->getConfiguration()->getFilterExport()->filterByValue($entry, $row, $value) === true)
+			if ($this->getConfiguration()->getFilter()->filterByValue($entry, $row, $value) === true)
 			{
 				continue;
 			}
 
 			// filter Before Node Creation
-			if ($this->getConfiguration()->getFilterExport()->filterById($entry, $row, $value) === true)
+			if ($this->getConfiguration()->getFilter()->filterById($entry, $row, $value) === true)
 			{
-				$idReferenceLevel3 = $this->getConfiguration()->getFilterExport()->findReference($value);
+				$idReferenceLevel3 = $this->getConfiguration()->getFilter()->findReference($value);
 				$idReferenceLevel2 = substr($idReferenceLevel3, 0, strrpos($idReferenceLevel3, '.'));
 
 				$xmlFileHeaderReferenceElement = $this->getXml()->createElement('reference');
