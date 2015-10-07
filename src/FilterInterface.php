@@ -2,8 +2,8 @@
 namespace DasRed\Translation\Db\Extractor;
 
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Map\Entry;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
+use DasRed\Translation\Db\Extractor\Configuration\Map\Entry;
+use DasRed\Translation\Db\Extractor\Configuration\Map\FieldCollection;
 
 interface FilterInterface
 {

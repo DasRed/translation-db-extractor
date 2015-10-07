@@ -3,7 +3,7 @@ namespace DasRed\Translation\Db\Extractor\Filter;
 
 use Zend\Config\Config;
 use DasRed\Translation\Db\Extractor\FilterAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
+use DasRed\Translation\Db\Extractor\Configuration\Map\FieldCollection;
 
 class Regex extends FilterAbstract
 {

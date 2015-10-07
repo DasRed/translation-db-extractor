@@ -1,8 +1,8 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import\Exception;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import\Exception;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Exception;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Exception;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table;
 
 class PrimaryFieldIsNotDefined extends Exception
 {

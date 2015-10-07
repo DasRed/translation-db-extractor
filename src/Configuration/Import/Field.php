@@ -1,5 +1,5 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import;
 
 use DasRed\Translation\Db\Extractor\Collection\EntryInterface;
 

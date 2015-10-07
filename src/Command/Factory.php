@@ -26,7 +26,7 @@ class Factory implements ConsoleAwareInterface
 	 */
 	public function factory(array $arguments)
 	{
-		$command = ucfirst(array_shift($arguments));
+		$command = 'Data';
 		$operation = ucfirst(array_shift($arguments));
 
 		$className = '\\DasRed\\Translation\\Db\\Extractor\\Command\\Executor\\' . $command . '\\' . $operation;

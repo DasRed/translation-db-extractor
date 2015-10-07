@@ -23,9 +23,9 @@ $opt = (new Getopt([
 $message = 'operation' . PHP_EOL;
 $message .= PHP_EOL;
 
-$message .= $console->colorize('data Operations:', ColorInterface::YELLOW) . PHP_EOL;
-$message .= $console->colorize(' data export <configuration> <xliff>', ColorInterface::GREEN) . '  export all data from database into given xliff file.' . PHP_EOL;
-$message .= $console->colorize(' data import <configuration> <xliff>', ColorInterface::GREEN) . '  import the data in xliff file into database.' . PHP_EOL;
+$message .= $console->colorize('Operations:', ColorInterface::YELLOW) . PHP_EOL;
+$message .= $console->colorize(' export <configuration> <xliff>', ColorInterface::GREEN) . '  export all data from database into given xliff file.' . PHP_EOL;
+$message .= $console->colorize(' import <configuration> <xliff>', ColorInterface::GREEN) . '  import the data in xliff file into database.' . PHP_EOL;
 
 try
 {
@@ -36,7 +36,7 @@ try
 		throw new \Exception('wants help');
 	}
 
-	if (!$opt->version && count($opt->getRemainingArgs()) < 2)
+	if (!$opt->version && count($opt->getRemainingArgs()) < 1)
 	{
 		throw new \Exception('missing remaining args');
 	}

@@ -5,8 +5,8 @@ use Zend\Console\ColorInterface;
 use Zend\ProgressBar\Adapter\Console;
 use Zend\ProgressBar\ProgressBar;
 use DasRed\Translation\Db\Extractor\Command\Executor\DataAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Export as ExportConfiguration;
+use DasRed\Translation\Db\Extractor\Configuration\Map\FieldCollection;
+use DasRed\Translation\Db\Extractor\Configuration\Export as ExportConfiguration;
 use Zend\Config\Config;
 
 class Export extends DataAbstract
@@ -45,7 +45,7 @@ class Export extends DataAbstract
 	{
 		try
 		{
-			/* @var $fieldCollection \DasRed\Translation\Db\Extractor\Data\Configuration\Map\FieldCollection */
+			/* @var $fieldCollection \DasRed\Translation\Db\Extractor\Configuration\Map\FieldCollection */
 			foreach ($this->getConfiguration()->getMap() as $fieldCollection)
 			{
 				// outputting
@@ -90,6 +90,8 @@ class Export extends DataAbstract
 		catch (\Exception $exception)
 		{
 			$this->getConsole()->writeLine('XLIFF can not be created.', ColorInterface::LIGHT_YELLOW, ColorInterface::LIGHT_RED);
+			$this->getConsole()->writeLine();
+			$this->getConsole()->writeLine($exception->getMessage() . PHP_EOL . PHP_EOL . $exception->getTraceAsString(), ColorInterface::LIGHT_YELLOW, ColorInterface::LIGHT_RED);
 			return false;
 		}
 

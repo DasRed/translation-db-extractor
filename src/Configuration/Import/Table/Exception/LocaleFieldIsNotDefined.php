@@ -1,8 +1,8 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Exception;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import\Table\Exception;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Exception;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Content;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table\Exception;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table\Content;
 
 class LocaleFieldIsNotDefined extends Exception
 {

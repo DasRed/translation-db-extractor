@@ -1,11 +1,11 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import\Table;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Field\Content as ContentField;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Exception\LinkFieldIsNotDefined;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Exception\ContentFieldIsNotDefined;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table\Exception\LocaleFieldIsNotDefined;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Field\Content as ContentField;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table\Exception\LinkFieldIsNotDefined;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table\Exception\ContentFieldIsNotDefined;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table\Exception\LocaleFieldIsNotDefined;
 use Zend\Config\Config;
 
 class Content extends Table
@@ -56,7 +56,7 @@ class Content extends Table
 	 */
 	public function getContentField()
 	{
-		$field = $this->find(function (Content $field)
+		$field = $this->find(function (ContentField $field)
 		{
 			return $field->isContent();
 		});
@@ -76,7 +76,7 @@ class Content extends Table
 	 */
 	public function getLinkField()
 	{
-		$field = $this->find(function (Content $field)
+		$field = $this->find(function (ContentField $field)
 		{
 			return $field->isLink();
 		});
@@ -96,7 +96,7 @@ class Content extends Table
 	 */
 	public function getLocaleField()
 	{
-		$field = $this->find(function (Content $field)
+		$field = $this->find(function (ContentField $field)
 		{
 			return $field->isLocale();
 		});

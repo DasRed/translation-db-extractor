@@ -1,9 +1,9 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration;
+namespace DasRed\Translation\Db\Extractor\Configuration;
 
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Table;
+use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Table;
 
 class Import extends ConfigurationAbstract
 {
@@ -22,7 +22,7 @@ class Import extends ConfigurationAbstract
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract::getConfigFilter()
+	 * @see \DasRed\Translation\Db\Extractor\ConfigurationAbstract::getConfigFilter()
 	 */
 	protected function getConfigFilter(Config $config)
 	{
@@ -36,7 +36,7 @@ class Import extends ConfigurationAbstract
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract::getConfigMap()
+	 * @see \DasRed\Translation\Db\Extractor\ConfigurationAbstract::getConfigMap()
 	 */
 	protected function getConfigMap(Config $config)
 	{

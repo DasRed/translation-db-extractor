@@ -1,8 +1,8 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data;
+namespace DasRed\Translation\Db\Extractor;
 
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\Configuration\Map\TableCollection;
+use DasRed\Translation\Db\Extractor\Configuration\Map\TableCollection;
 use DasRed\Translation\Db\Extractor\FilterFactory;
 use DasRed\Translation\Db\Extractor\Filter\Collection as FilterCollection;
 
@@ -13,6 +13,7 @@ abstract class ConfigurationAbstract
 	 * @var Config
 	 */
 	protected $database;
+
 	/**
 	 * @var FilterCollection
 	 */

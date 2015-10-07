@@ -1,5 +1,5 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Map;
+namespace DasRed\Translation\Db\Extractor\Configuration\Map;
 
 use DasRed\Translation\Db\Extractor\Collection\EntryInterface;
 

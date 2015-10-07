@@ -3,7 +3,7 @@ namespace DasRed\Translation\Db\Extractor\Command\Executor;
 
 use Zend\Config\Factory;
 use DasRed\Translation\Db\Extractor\Command\ExecutorAbstract;
-use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
+use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
 use DasRed\Translation\Db\Extractor\Database\ConnectionAwareInterface;
 use DasRed\Translation\Db\Extractor\Database\ConnectionAwareTrait;
 use Zend\Config\Config;
@@ -59,7 +59,6 @@ abstract class DataAbstract extends ExecutorAbstract implements ConnectionAwareI
 		return $this->getArguments()[1];
 	}
 
-
 	/**
 	 * @return \DOMDocument
 	 */
@@ -88,6 +87,4 @@ abstract class DataAbstract extends ExecutorAbstract implements ConnectionAwareI
 	 * @return string
 	 */
 	abstract protected function getXmlFileToLoad();
-
-
 }

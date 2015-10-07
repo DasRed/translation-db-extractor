@@ -1,4 +1,6 @@
 <?php
+define('APPLICATION_PATH', __DIR__);
+
 $autoloader = null;
 foreach ([
 	// Local install

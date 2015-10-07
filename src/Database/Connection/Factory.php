@@ -1,7 +1,7 @@
 <?php
 namespace DasRed\Translation\Db\Extractor\Database\Connection;
 
-use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
+use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
 
 class Factory
 {

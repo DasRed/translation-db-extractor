@@ -1,7 +1,7 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import\Field;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import\Field;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Field;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Field;
 
 class Content extends Field
 {

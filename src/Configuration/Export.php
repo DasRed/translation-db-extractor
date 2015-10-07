@@ -1,15 +1,20 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration;
+namespace DasRed\Translation\Db\Extractor\Configuration;
 
 use Zend\Config\Config;
-use DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract;
+use DasRed\Translation\Db\Extractor\ConfigurationAbstract;
 
 class Export extends ConfigurationAbstract
 {
+	/**
+	 *
+	 * @var string
+	 */
+	protected $xmlTemplateFile;
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract::getConfigFilter()
+	 * @see \DasRed\Translation\Db\Extractor\ConfigurationAbstract::getConfigFilter()
 	 */
 	protected function getConfigFilter(Config $config)
 	{
@@ -23,11 +28,11 @@ class Export extends ConfigurationAbstract
 
 	/**
 	 * (non-PHPdoc)
-	 * @see \DasRed\Translation\Db\Extractor\Data\ConfigurationAbstract::getConfigMap()
+	 * @see \DasRed\Translation\Db\Extractor\ConfigurationAbstract::getConfigMap()
 	 */
 	protected function getConfigMap(Config $config)
 	{
-		return $config->export;
+		return $config->export->map;
 	}
 
 	/**
@@ -35,7 +40,7 @@ class Export extends ConfigurationAbstract
 	 */
 	public function getXmlTemplateFile()
 	{
-		return __DIR__ . '/../../../config/template.xml';
+		return $this->xmlTemplateFile;
 	}
 
 	/**
@@ -46,6 +51,20 @@ class Export extends ConfigurationAbstract
 	protected function setConfigValues(Config $config)
 	{
 		parent::setConfigValues($config);
+
+		$this->setXmlTemplateFile($config->export->template);
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @param string $xmlTemplateFile
+	 * @return self
+	 */
+	protected function setXmlTemplateFile($xmlTemplateFile)
+	{
+		$this->xmlTemplateFile = $xmlTemplateFile;
 
 		return $this;
 	}

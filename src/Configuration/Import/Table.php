@@ -1,7 +1,7 @@
 <?php
-namespace DasRed\Translation\Db\Extractor\Data\Configuration\Import;
+namespace DasRed\Translation\Db\Extractor\Configuration\Import;
 
-use DasRed\Translation\Db\Extractor\Data\Configuration\Import\Exception\PrimaryFieldIsNotDefined;
+use DasRed\Translation\Db\Extractor\Configuration\Import\Exception\PrimaryFieldIsNotDefined;
 use DasRed\Translation\Db\Extractor\Collection\Object;
 use DasRed\Translation\Db\Extractor\Collection\EntryInterface;
 use Zend\Config\Config;
@@ -83,6 +83,78 @@ class Table extends Object implements EntryInterface
 		}
 
 		return $field;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSQLInsert()
+	{
+		$sql = [];
+
+		/* @var $field Field */
+		foreach ($this as $field)
+		{
+			$value = $field->getValue();
+			if ($value === null)
+			{
+				$value = $field->getDefault();
+			}
+			if ($value === null)
+			{
+				continue;
+			}
+
+			$sql[] = '`' . $field->getName() . '` = ' . $value;
+		}
+
+		return 'INSERT INTO `' . $this->getName() . '` SET ' . implode(',', $sql);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSQLStore()
+	{
+		if ($this->getPrimaryField()->getValue() === null)
+		{
+			return $this->getSQLInsert();
+		}
+
+		return $this->getSQLUpdate();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSQLUpdate()
+	{
+		$sql = [];
+
+		$primaryField = $this->getPrimaryField();
+
+		/* @var $field Field */
+		foreach ($this as $field)
+		{
+			if ($field === $primaryField)
+			{
+				continue;
+			}
+
+			$value = $field->getValue();
+			if ($value === null)
+			{
+				$value = $field->getDefault();
+			}
+			if ($value === null)
+			{
+				continue;
+			}
+
+			$sql[] = '`' . $field->getName() . '` = ' . $value;
+		}
+
+		return 'UPDATE `' . $this->getName() . '` SET ' . implode(',', $sql) . ' WHERE `' . $primaryField->getName() . '` = ' . $primaryField->getValue();
 	}
 
 	/**
