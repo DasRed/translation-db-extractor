@@ -50,15 +50,6 @@ class Import extends DataAbstract
 		{
 			$this->parseTargetList()->parseDuplicateList()->updateDatabase();
 
-			// $this->getConfiguration();
-
-			// Step 1 ... read XLIFF File into Structure
-			// Step 1.1 ... read trans-unit elements
-			// Step 1.2 ... read duplicate elements
-			// Step 1.3 ... filter
-			// Step 2 ... write to database
-
-			$this->getConsole()->writeLine('COUNT: ' . $this->getData()->count());
 			$this->getConsole()->writeLine('XLIFF parsed and database updated.', ColorInterface::BLACK, ColorInterface::LIGHT_GREEN);
 		}
 		catch (\Exception $exception)
