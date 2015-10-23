@@ -23,7 +23,6 @@ class Object extends Collection
 		$fields = $this->getArrayCopy();
 		$this->exchangeArray([]);
 
-		/* @var $field Field */
 		foreach ($fields as $field)
 		{
 			$this->append(clone $field);
